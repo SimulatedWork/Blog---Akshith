@@ -1,0 +1,196 @@
+.footer-container {
+  background-color: #000;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+
+.logo-footer {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5vw;
+  width: 100%;
+  background-color: black;
+}
+
+.logo {
+  background-color: black;
+  width: 20%;
+  margin-top: 2vmin;
+  margin-bottom: 2vh;
+}
+
+.logo-description {
+  margin-right: 0%;
+  width: 72%;
+  text-align: center;
+  margin-top: 3vh;
+  font-size: large;
+  color: white;
+  background-color: black;
+}
+
+/* CSS for the footer section 2 */
+.logo-footer2 {
+  width: 80%;
+  background-color:black;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+/* CSS for the options section */
+.options {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2vh;
+  /* margin-left: 9%; */
+  width: 100%;
+}
+
+/* CSS for the links */
+.link-div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+/* CSS for the important links section */
+.important-links {
+  color: white;
+  background-color: black;
+  margin-bottom: 0.6vh;
+  font-size: 20px;
+}
+
+/* CSS for the policies section */
+.policies {
+  color: white;
+  background-color: black;
+  margin-bottom: 0.6vh;
+  font-size: 20px;
+}
+
+/* CSS for the sub-heading */
+.sub-heading {
+  margin: auto;
+  color: black;
+}
+
+/* CSS for the social icons section */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 5vw;
+  margin-top: 5%;
+  background-color: black;
+}
+
+.copyright {
+  text-align: center;
+  color: rgb(241, 246, 249);
+  background-color: black;
+  font-size: large;
+  margin: 5%;
+  /* margin-bottom: 1%; */
+}
+
+
+a{
+    text-decoration: none;
+    color: white;
+}
+span{
+    background-color: rgb(33, 42, 62);
+    background-color: transparent;
+    font-size: large;
+}
+
+.footer{
+    z-index: 2;
+    background-color: black;
+}
+
+.logo{
+    height: 20vmin;
+}
+.heading{
+    margin-top: 4%;
+    margin-bottom: 3%;
+    text-align: left;
+    font-size: xxx-large;
+    background-color: transparent;
+    color: white;
+    text-shadow: 0px 0px 90px #000, 0px 0px 10px #858585;
+  
+  }
+  
+  .sub-heading{
+    margin-top: -3%;
+    text-align: left;
+    font-size: x-large;
+    background-color: transparent;
+    color: white;
+    width: fit-content;
+  }
+  
+  
+  .heading-content{
+    text-align: left;
+    font-size: large;
+    margin-right: 4.5%;
+    background-color: transparent;
+    color: #fcfc;
+    margin-top: -2%;
+    font-weight: bold;
+  }
+  li{
+    text-align: left;
+  }
+
+@media screen and (max-width:650px){
+    .logo{
+        width: 25% !important;
+        height: auto;
+    }
+    .logo-footer{
+    width: 90% !important;
+    margin-bottom: 2vmin !important;
+    }
+    .logo-text{
+        flex-direction: column !important;
+        gap: 0vh !important;
+    }
+    .logo-footer2{
+    width: 80% !important;
+    }
+    .links{
+    font-size: medium !important;
+    }
+   
+    .logo-text2{
+    display: flex !important;
+    }
+    .options{
+        flex-direction: column !important;
+        /* margin-left: 0% !important; */
+    }
+    .link-div{
+        margin-bottom: 2vmin !important;
+      }
+}
