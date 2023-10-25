@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import "./blogPage.css";
 import IMG from "../Assests/image-1.jpeg"
 
@@ -15,7 +16,9 @@ export default function blogPage() {
             ></input>
         </div>
         <div className='blog-div-btn'>
+          <Link to="/createrPage">
           <button className='blog-btn1'>+ CREATE</button>
+          </Link>
         </div>
       </div>
       <div className='blog-sub2'>
