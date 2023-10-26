@@ -1,16 +1,16 @@
-.blog-main{
+.creater-main{
     height: 100vh;
     display: flex;
     flex-direction: column;
 }
-.blog-sub1{
+.creater-sub1{
     display: flex;
     flex-direction: row;
     justify-content: center;
     margin: 1rem;
 }
 
-.blog-wrap {
+.creater-wrap {
     width: fit-content;
     margin: 0 auto;
   }
@@ -32,16 +32,13 @@
     transition: 0.3s;
   }
 
-  /* .blog-div-btn{
-    margin: 1%;
-  } */
 
-  .blog-btn1{
+  .creater-btn1{
     margin: 1%;
     position: absolute;
     right: 4vw;
     height: 6vh;
-    width: 7.5vw;
+    width: 6vw;
     background-color: #5ACEC9;
     color: white;
     font-size: 2.5vmin;
@@ -51,7 +48,7 @@
     cursor: pointer;
   }
 
-  .blog-sub2{
+  .creater-sub2{
     display: flex;
     flex-direction: row;
     height:fit-content ;
@@ -63,37 +60,37 @@
     margin: auto;
   }
 
-  .blog-img{
+  .creater-img{
     margin: 1rem;
   }
 
-  .IMG{
+  .creater-IMG{
     height: 25vmin;
     width: 33vmin;
   }
-  .blog-hp{
+  .creater-hp{
     margin: .3rem;
     text-align: left;
   }
-  .blog-h1{
+  .creater-h1{
     font-size: 2rem;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-style: normal;
   }
 
-  .blog-para{
+  .creater-para{
     font-size: 1rem;
     /* width: 75vw; */
     color: #251401;
   }
 
-  .blog-btn{
+  .creater-btn{
     text-align: right;
     margin-top:3vmin;
     /* align-items: flex-end; */
   }
 
-  .btn-2{
+  .creater-btn-2{
     background-color: #0a0500;
     width: fit-content;
     border-radius: none;

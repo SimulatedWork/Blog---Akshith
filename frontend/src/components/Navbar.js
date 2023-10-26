@@ -20,7 +20,7 @@ export default function Navbar() {
               </div>
               <div>
               <Link to={"/blogPage"} className="Create-btn">
-                Create
+                Blog
               </Link>
               </div>
               {/* <div>
