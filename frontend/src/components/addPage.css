@@ -1,3 +1,81 @@
 .addPage-main{
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
 }
+.addPage-sub1{
+    margin: 0;
+    display: flex;
+    justify-content: right;
+    align-items: flex-start;
+}
+.addPage-h1{
+  margin: 1%;
+  font-size: 7vmin;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.addPage-btn1{
+  margin: 1%;
+  padding: 1vmin;
+  margin: 4vmin;
+  height: 6vmin;
+  width: 15vmin;
+  background-color: #5ACEC9;
+  color: white;
+  font-size: 2.5vmin;
+  font-weight: bolder;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: 900;
+  border-radius: 3vmin;
+  cursor: pointer;
+}
+
+.addPage-sub2{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;  
+    background-color: rgb(7, 8, 8);
+    padding: 20px;
+    border-radius: 10px;
+    margin:0 auto;
+    height: fit-content;
+}
+
+
+  .addPage-label{
+    color: rgb(248, 243, 243);
+  }
+
+.addPage-input1{
+    padding: 1%;
+    margin-bottom: 10px;
+    margin: 1px;
+    width: 100%;
+    font-size: 3vmin;
+    color: #e18503;
+    outline: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.addPage-input1:focus {
+    background-color: #fdf9f9;
+    color: black;
+    /* box-shadow: 0 0 0 2px #123c69; */
+}
+
+.addPage-input1:valid {
+    border: 1px solid rgb(249, 250, 249);
+}
+
+.addPage-input1:invalid {
+    border: 1px solid rgba(238, 235, 235, 0.205);
+}
+
+
+  

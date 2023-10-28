@@ -68,6 +68,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
+  justify-content: space-evenly;
 }
 
 /* CSS for the important links section */
@@ -163,13 +164,13 @@ span{
     text-align: left;
   }
 
-@media screen and (max-width:650px){
+@media screen and (max-width:870px){
     .logo{
         width: 25% !important;
         height: auto;
     }
     .logo-footer{
-    width: 90% !important;
+    width: 100% !important;
     margin-bottom: 2vmin !important;
     }
     .logo-text{
