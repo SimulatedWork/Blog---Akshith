@@ -35,7 +35,7 @@ export default function Navbar() {
               </div>
              
           <div className="nav-title" id="nav-check">
-            <Link >
+            <Link to={"/loginpage"}>
               Login
             </Link>
           </div>

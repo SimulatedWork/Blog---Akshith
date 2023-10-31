@@ -1,0 +1,127 @@
+.viewPage-main {
+    /* height: 100%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.viewPage-sub1 {
+    display: flex;
+    flex-direction: row;
+}
+
+.img-div {
+    margin: auto;
+    position: absolute;
+    top: 15vh;
+    left: 6vw;
+}
+
+.viewPage-img {
+    align-items: center;
+    margin: 12cqmin;
+    height: 40vh;
+    width: 30vw;
+    border: solid;
+}
+
+.viewPage-divimg {
+    background-color: #FA9F42;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: justify;
+    height: fit-content;
+    width: 50%;
+    margin: 2vh 25vw;
+    padding: 2%;
+    border: solid;
+}
+
+.viewpage-label {
+    color: #030606;
+    font-size: 3vmin;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding-left: 45%;
+    text-shadow: 2px 2px #F3533B;
+}
+
+.ViewPage-para {
+    color: rgb(249, 247, 247);
+    font-size: 3vmin;
+    font-family: 'Times New Roman', Times, serif;
+    /* width: 50%; */
+    padding-left: 45%;
+}
+
+.ViewPage-btn-div {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-around; */
+    margin: 2%;
+    /* padding:2%; */
+}
+
+.ViewPage-like {
+    margin: 2%;
+}
+
+.like-btn {
+    background-color: red;
+    color: aliceblue;
+    font-size: 3.8vmin;
+    font-weight: bolder;
+    font-style: normal;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    height: 6vmin;
+    width: 15vmin;
+    border-radius: 2vmin;
+    cursor: pointer;
+}
+
+.viewPage-comment {
+    margin: 2%;
+}
+
+.comment-btn {
+    background-color: #FA9F42;
+    color: aliceblue;
+    font-size: 3.8vmin;
+    font-weight: bolder;
+    font-style: normal;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    height: 6vmin;
+    width: 24vmin;
+    border-radius: 2vmin;
+    cursor: pointer;
+}
+
+@media screen and (max-width:1100px) {
+
+    .viewPage-sub1 {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .img-div {
+        left: 21%;
+        top: 18%;
+    }
+    .viewPage-img{
+        height: 30vh;
+        width: 40vw;
+    }
+
+    .viewPage-divimg {
+        margin-top: 35vh;
+    }
+    .viewpage-label {
+        padding-left: 0%;
+        padding-top: 45%;
+    }
+
+    .ViewPage-para {
+        padding-left: 0%;
+        /* padding-top: 45%; */
+    }
+}
