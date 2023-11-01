@@ -1,6 +1,6 @@
 .Home-main{
     background-color:#F3533B;
-    height: 100vh;
+    /* height: 100vh; */
     width: 100%;
     margin: 0;
     display: flex;
@@ -27,7 +27,7 @@
 }
 .home-h2{
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 10vmin;
+    font-size: 9.2vmin;
 }
 
 .home-p{
@@ -46,10 +46,10 @@
 
 .home-btn{
     background-color: rgb(13, 13, 13);
-    height: 5vmin;
-    width: 15vmin;
+    height: 5.8vmin;
+    width: 18vmin;
     color: aliceblue;
-    font-size: large;
+    font-size: 3vmin;
     font-weight: bold;
     font-style: normal;
     font-family: 'Times New Roman', Times, serif;
@@ -57,14 +57,35 @@
     cursor: pointer;
 }
 
+.home-btn:hover{
+background-color: aqua;
+color: black;
+}
 
 .sub2{
     display: flex;
     flex-direction: column;
     margin-top: 10vmin;
-    margin-left: 4vmax;
+    /* margin-left: 4vmax; */
+    margin: auto;
+    /* right: 40px; */
 }
 
 .home-img{
-    height: 20vmax;
+    height: 30vh;
+    width: 25vw;
+    top: 10%;
+    /* margin: auto; */
+}
+
+@media screen and (max-width:870px){
+    .Home-main{
+        display: flex;
+        flex-direction: column;
+    }
+    .home-img{
+        width: 50vw;
+        margin-left: 45%;
+        margin-bottom: 2%;
+    }
 }

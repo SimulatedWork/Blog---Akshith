@@ -32,6 +32,7 @@
     justify-content: center;
     text-align: justify;
     height: fit-content;
+    min-height: 55vh;
     width: 50%;
     margin: 2vh 25vw;
     padding: 2%;
@@ -57,7 +58,7 @@
 .ViewPage-btn-div {
     display: flex;
     flex-direction: row;
-    /* justify-content: space-around; */
+    justify-content: center;
     margin: 2%;
     /* padding:2%; */
 }

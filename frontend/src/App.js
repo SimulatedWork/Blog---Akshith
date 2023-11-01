@@ -7,6 +7,8 @@ import CreaterPage from './components/createrPage';
 import AddPage from './components/addPage';
 import ViewPage from './components/viewPage';
 import LoginPage from './components/loginPage';
+import RegiPage from './components/regiPage';
+import AboutPage from './components/aboutPage';
 import { Route,Routes
 } from 'react-router-dom';
 function App() {
@@ -22,6 +24,8 @@ function App() {
         <Route path='/addPage' element={<AddPage/>}/>
         <Route path='/viewPage/:id' element={<ViewPage/>}/>
         <Route path='/loginpage' element={<LoginPage/>}/>
+        <Route path='/regiPage' element={<RegiPage/>}/>
+        <Route path='/aboutPage' element={<AboutPage/>}/>
        </Routes>
        <Footer/>
       
