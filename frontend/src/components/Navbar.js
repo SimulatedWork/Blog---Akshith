@@ -29,13 +29,13 @@ export default function Navbar() {
               </Link>
               </div> */}
               <div>
-              <Link className="About-btn">
+              <Link to={"/aboutPage"} className="About-btn">
                 About 
               </Link>
               </div>
              
           <div className="nav-title" id="nav-check">
-            <Link >
+            <Link to={"/loginpage"}>
               Login
             </Link>
           </div>

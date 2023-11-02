@@ -7,7 +7,10 @@ const UserSchema= mongoose.Schema({
     Blogimg:{
         type:String
     },
-    Content:{
+    Blogtags:{
+        type:Array
+    },
+    BlogContent:{
         type:String
     },
 })
