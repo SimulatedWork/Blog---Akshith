@@ -80,3 +80,50 @@ app.get("/blogview/:id", async (req, res) => {
   res.status(200).json(list);
 });
   
+
+// app.get("/blogtags", async (err, data) => {
+//   const datas = await Model.aggregate([
+//     { $project: { Blogtags: 1 } }
+//   ]);
+  
+//   data.status(200).send(datas);
+// });
+
+app.get("/blogtags", async (req, res) => {
+  try {
+    const uniqueTags = await Model.aggregate([
+      { $group: { _id: "$Blogtags" } },
+      { $project: { _id: 0, Blogtags: "$_id" } },
+    ]);
+    res.status(200).json(uniqueTags);
+  } catch (error) {
+    console.error("Error fetching tags:", error);
+    res.status(500).json({ error: "Failed to fetch tags" });
+  }
+});
+
+
+app.post("/like/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const blog = await Model.findById(id);
+
+    if (!blog) {
+      return res.status(404).json({ error: "Blog not found" });
+    }
+    blog.BlogLike += 1;
+    // console.log(blog);
+    await blog.save();
+    res.status(200).json({ likes: blog.BlogLike});
+  } catch (error) {
+    console.error("Error liking the blog post:", error);
+    res.status(500).json({ error: "Failed to like the blog post" });
+  }
+});
+
+app.get("/displaylike/:id", async (req, res) => {
+  const { id } = req.params;
+  const list = await Model.findById(id).select("BlogLike");
+  res.status(200).json(list);
+});
+
