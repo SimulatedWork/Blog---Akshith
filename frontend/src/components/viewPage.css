@@ -97,6 +97,10 @@
     cursor: pointer;
 }
 
+.Like-para{
+    color: #030606;
+}
+
 @media screen and (max-width:1100px) {
 
     .viewPage-sub1 {

@@ -11,7 +11,7 @@ export default function BlogPage() {
 
 
   useEffect(() => {
-    fetch("http://localhost:3000/blogdata")
+    fetch("http://localhost:2004/blogdata")
       .then((response) => response.json())
       .then((data) => {
         console.log("data", data);

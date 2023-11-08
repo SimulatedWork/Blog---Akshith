@@ -13,6 +13,13 @@ const UserSchema= mongoose.Schema({
     BlogContent:{
         type:String
     },
+    BlogLike: {
+        type: Number,
+        // default: 0, 
+    },
+    BlogComments:{
+        type:Array
+    }
 })
 
 const Model=mongoose.model("Model",UserSchema);
