@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 export default function ViewPage() {
   const { id } = useParams();
   const [viewdata, setViewdata] = useState([]);
-  const [bloglike, setBloglike] = useState(0);
+  const [bloglike, setBloglike] = useState([]);
   const [ viewlike,setViewlike] = useState("")
 
   useEffect(() => {
@@ -27,11 +27,11 @@ export default function ViewPage() {
   // Inside your BlogPage component
   const handleLikeClick = (id) => {
     fetch(`http://localhost:2004/like/${id}`, {
-      method: "POST",
+      method: "PUT",
     })
       .then((response) => response.json())
       .then((data) => {
-        setBloglike(data.BlogLike);
+        setBloglike(data);
         console.log("Data", data);
       })
       .catch((error) => {
