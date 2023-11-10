@@ -1,6 +1,9 @@
 const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const jwt=require("jsonwebtoken");
+// const isEmail=require("validator");
 
 require("dotenv").config();
 
@@ -9,7 +12,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const Model = require("./model")
+const Model = require("./model");
+
+const User=require("./userSchema");
 
 mongoose.set("strictQuery", false);
 
@@ -103,11 +108,13 @@ app.get("/blogtags", async (req, res) => {
 });
 
 
-app.post("/like/:id", async (req, res) => {
+
+app.put("/like/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    console.log("id",id)
     const blog = await Model.findById(id);
-
+    console.log("boolean",blog)
     if (!blog) {
       return res.status(404).json({ error: "Blog not found" });
     }
@@ -127,3 +134,60 @@ app.get("/displaylike/:id", async (req, res) => {
   res.status(200).json(list);
 });
 
+
+app.post('/register', async(req,res)=>{
+  const {
+    Username,
+    Useremail,
+    Userpassword,
+  } = req.body;
+  if (!Useremail || !Userpassword)
+    return res.status(400).json({ msg: "Password and email are required" });
+  if (Userpassword.length < 8) {
+    return res
+      .status(400)
+      .json({ msg: "Password should be at least 8 characters long" });
+  }
+  const newpassword= await bcrypt.hash(Userpassword,10);
+  console.log(req.body);
+  try{
+    const user = await User.findOne({ Useremail:Useremail });
+        // user.validate[isEmail,"Please enter a valid email"];
+      
+  if (user){ 
+    console.log("user fund")
+    const token = jwt.sign({
+      email: user.email,
+      name: user.name,
+      _id:user._id,
+    },"akshith29")
+    return res.status(400).json({ msg: "User already exists","token":token })
+}
+     else{
+      const model = new User({
+        Username,
+        Useremail,
+        Userpassword:newpassword,
+      })
+       
+         const duser = await model.save();
+         if(duser){
+          const token = jwt.sign({
+            email: duser.email,
+            name: duser.name,
+            _id:duser._id,
+          },"akshith29")
+          res.status(201).json({message: "sucess","token":token})
+        }
+        else{
+          res.status(501).json({message: "tryagain"})
+        }
+     }
+    
+
+  }
+  catch (err){
+console.log(err);
+  }
+
+})
