@@ -112,9 +112,9 @@ app.get("/blogtags", async (req, res) => {
 app.put("/like/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("id",id)
+    // console.log("id",id)
     const blog = await Model.findById(id);
-    console.log("boolean",blog)
+    // console.log("boolean",blog)
     if (!blog) {
       return res.status(404).json({ error: "Blog not found" });
     }
@@ -135,59 +135,92 @@ app.get("/displaylike/:id", async (req, res) => {
 });
 
 
-app.post('/register', async(req,res)=>{
-  const {
-    Username,
-    Useremail,
-    Userpassword,
-  } = req.body;
-  if (!Useremail || !Userpassword)
-    return res.status(400).json({ msg: "Password and email are required" });
-  if (Userpassword.length < 8) {
-    return res
-      .status(400)
-      .json({ msg: "Password should be at least 8 characters long" });
-  }
-  const newpassword= await bcrypt.hash(Userpassword,10);
-  console.log(req.body);
-  try{
-    const user = await User.findOne({ Useremail:Useremail });
-        // user.validate[isEmail,"Please enter a valid email"];
-      
-  if (user){ 
-    console.log("user fund")
-    const token = jwt.sign({
-      email: user.email,
-      name: user.name,
-      _id:user._id,
-    },"akshith29")
-    return res.status(400).json({ msg: "User already exists","token":token })
-}
-     else{
-      const model = new User({
+app.post('/register', async (req, res) => {
+  try {
+    const { Username, Useremail, Userpassword } = req.body;
+
+    if (!Useremail || !Userpassword) {
+      return res.status(400).json({ status: "Password and email are required" });
+    }
+
+    if (Userpassword.length < 8) {
+      return res.status(400).json({ status: "Password should be at least 8 characters long" });
+    }
+
+    const hashedPassword = await bcrypt.hash(Userpassword, 10);
+
+    const user = await User.findOne({ Useremail: Useremail });
+
+    if (user) {
+      const token = jwt.sign({
+        email: user.Useremail,
+        name: user.Username,
+        _id: user._id,
+      }, "akshith29");
+
+      return res.status(400).json({ status: "User already exists", token: token });
+    } else {
+      const newUser = new User({
         Username,
         Useremail,
-        Userpassword:newpassword,
-      })
-       
-         const duser = await model.save();
-         if(duser){
-          const token = jwt.sign({
-            email: duser.email,
-            name: duser.name,
-            _id:duser._id,
-          },"akshith29")
-          res.status(201).json({message: "sucess","token":token})
-        }
-        else{
-          res.status(501).json({message: "tryagain"})
-        }
-     }
-    
+        Userpassword: hashedPassword,
+      });
 
-  }
-  catch (err){
-console.log(err);
-  }
+      const savedUser = await newUser.save();
 
-})
+      if (savedUser) {
+        const token = jwt.sign({
+          email: savedUser.Useremail,
+          name: savedUser.Username,
+          _id: savedUser._id,
+        }, "akshith29");
+
+        return res.status(201).json({ status: "Successfully Registered", token: token });
+      } else {
+        return res.status(501).json({ status: "Try again" });
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ status: "Internal Server Error" });
+  }
+});
+
+
+app.post("/login", async (req, res) => {
+  try {
+    const { Useremail, Userpassword } = req.body;
+    const check = await User.findOne({ Useremail: Useremail });
+
+    if (!check) {
+      return res.json({ status: "Please check email and password", user: null });
+    }
+
+    if (check.Userpassword) {
+      const isPasswordValid = await bcrypt.compare(Userpassword, check.Userpassword);
+      if (isPasswordValid) {
+        const token = jwt.sign({
+          email: check.Useremail,
+          password: check.Userpassword,
+          name: check.Username,
+          _id: check._id
+        }, "akshith");
+        return res.json({ status: "Signed in successfully", user: token });
+      } else {
+        return res.json({ status: "Please check email and password", user: null });
+      }
+    }
+
+    if (check.withgoogle) {
+      const token = jwt.sign({
+        email: check.email,
+        _id: check._id,
+        name: check.name
+      }, "akshith01"); 
+      return res.json({ status: "Signed in successfully", user: token });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ status: "Internal Server Error", user: null });
+  }
+});
