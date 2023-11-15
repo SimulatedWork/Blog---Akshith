@@ -1,12 +1,16 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import "./loginPage.css";
 import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message} from 'antd';
+import { jwtDecode } from "jwt-decode";
+// import { useNavigate} from "react-router-dom"
 import { Link } from "react-router-dom";
 import ICON from "../Assests/google-icon.png";
 
 
 export default function RegiPage() {
+
+  const ID=process.env.REACT_APP_ID;
   const[username,setUsername]=useState('');
   const[useremail,setUseremail]=useState('');
   const[Userpassword,setUserpassword]=useState('');
@@ -23,6 +27,48 @@ export default function RegiPage() {
   const handleUserpasswordChange=(event)=>{
     setUserpassword(event.target.value)
   }
+  
+  function handlecallbackresponse(response){
+    
+    fetch("http://localhost:2004/token", {
+      method: "POST",
+      body: JSON.stringify({
+        "tokenold":response.credential
+    }),
+      headers: {
+          "Content-type": "application/json; charset=UTF-8"
+      }
+  })
+  .then(response => response.json())
+  .then(json => {
+    console.log("json :", json)
+    const decode = jwtDecode(json.user);
+    console.log("decode :", decode)
+    localStorage.setItem("username",decode.name);
+    localStorage.setItem("token",json.user);
+    window.location.href = '/';
+  }
+     
+  );
+  }
+
+
+  useEffect(()=>{
+    /* global google */
+    google.accounts.id.initialize({
+      client_id:ID,
+      callback: handlecallbackresponse
+    })
+
+    google.accounts.id.renderButton(
+      document.getElementById("signindiv"),
+      {size:"medium"}
+    );
+
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
+  
 
 
     const onFinish = async(values) => {
@@ -44,7 +90,7 @@ export default function RegiPage() {
             const json = await response.json();
             console.log(json);
             message.success(json.status);
-            // window.location.href = '/loginpage';
+            window.location.href = '/loginpage';
           } else {
             const errorJson = await response.json();
             console.log(errorJson);
@@ -120,7 +166,7 @@ export default function RegiPage() {
       </Button>
     </Form.Item>
     <Form.Item>
-        <button className='login-btn'> Continue with Google<img className='login-icon' src={ICON} alt=''/></button>
+        <button id="signindiv"  type="submit"> Continue with Google<img className='login-icon' src={ICON} alt=''/></button>
     </Form.Item>
   </Form></div>
   )

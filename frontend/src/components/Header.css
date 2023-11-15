@@ -85,7 +85,10 @@ margin-left: auto;
 }
 
 
-
+.Navbar-logo{
+   height: 5vmin;
+   /* background-color: aqua; */
+}
 
 
  

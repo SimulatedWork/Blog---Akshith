@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt=require("jsonwebtoken");
+const { OAuth2Client } = require('google-auth-library');
 // const isEmail=require("validator");
 
 require("dotenv").config();
@@ -15,6 +16,7 @@ app.use(express.json());
 const Model = require("./model");
 
 const User=require("./userSchema");
+const User_ID=process.env.ID;
 
 mongoose.set("strictQuery", false);
 
@@ -61,13 +63,14 @@ app.get("/blogdata", async (err, data) => {
 // })
 
 app.post("/blogPost", async (req, res) => {
-  const { BlogName, Blogimg, Blogtags, BlogContent } = req.body;
+  const { BlogName, Blogimg, Blogtags, BlogContent, User_ID } = req.body;
 
   const blogPost = Model({
     BlogName,
     Blogimg,
     Blogtags,
     BlogContent,
+    User_ID,
   });
 
   try {
@@ -134,6 +137,103 @@ app.get("/displaylike/:id", async (req, res) => {
   res.status(200).json(list);
 });
 
+const client = new OAuth2Client(User_ID);
+
+// app.post("/token", async (req, res) => {
+//   const { tokenold } = req.body;
+
+//   const ticket = await client.verifyIdToken({
+//     idToken: tokenold,
+//     audience: User_ID,
+//   });
+//   const payload = ticket.getPayload();
+//   console.log("payload",payload)
+//   const email = payload.email;
+//   const check = await Model.findOne({ Useremail: email });
+//   if (!check) {
+//     // create new account in database
+//     const name = payload.Username;
+//     const email = payload.Useremail;
+
+//     const detail = new Model();
+//     detail.Username = name;
+//     detail.Useremail = email;
+//     detail.withgoogle = true;
+
+//     detail.save(async (err, data) => {
+//       if (err) {
+//         console.log(err);
+//       } else {
+//         // send response once database operation is complete
+//         const token = jwt.sign({
+//           email: data.Useremail,
+//           name: data.Username,
+//           _id:data._id,
+//         }, "akshith10");
+//         res.json({ status: "signed in successfully", user: token });
+//       }
+//     });
+//   } else {
+//     const token = jwt.sign({
+//       "email": check.Useremail,
+//       "name": check.Username,
+//       "_id":check._id,
+//     }, "akshith10");
+//     res.json({ status: "signed in successfully", user: token });
+//   }
+// });
+
+
+app.post("/token", async (req, res) => {
+  const { tokenold } = req.body;
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: tokenold,
+      audience: User_ID,
+    });
+
+    const payload = ticket.getPayload();
+    console.log("payload", payload);
+
+    const email = payload.email;
+    const check = await User.findOne({ Useremail: email });
+
+    if (!check) {
+      // create new account in database
+      const name = payload.name;
+      const email = payload.email;
+
+      const detail = new User({
+        Username: name,
+        Useremail: email,
+        withgoogle: true,
+      });
+
+      const data = await detail.save();
+      
+      // send response once database operation is complete
+      const token = jwt.sign({
+        email: data.Useremail,
+        name: data.Username,
+        _id: data._id,
+      }, "akshith10");
+
+      return res.status(201).json({ status: "signed in successfully", user: token });
+    } else {
+      const token = jwt.sign({
+        email: check.Useremail,
+        name: check.Username,
+        _id: check._id,
+      }, "akshith10");
+
+      return res.status(201).json({ status: "signed in successfully", user: token });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: "Internal Server Error" });
+  }
+});
 
 app.post('/register', async (req, res) => {
   try {
@@ -222,5 +322,43 @@ app.post("/login", async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ status: "Internal Server Error", user: null });
+  }
+});
+
+
+app.get("/userdata/:id", async (req, res) => {
+  const { id } = req.params;
+  const list = await User.findById(id);
+  res.status(200).json(list);
+});
+
+
+app.put('/addComment/:blogId', async (req, res) => {
+  const { userId,username ,text } = req.body;
+  const { blogId } = req.params;
+
+  try {
+    // Check if the user exists
+    const userExists = await User.findById(userId);
+    if (!userExists) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Find the blog post by ID
+    const blog = await Model.findById(blogId);
+    if (!blog) {
+      return res.status(404).json({ error: 'Blog post not found' });
+    }
+
+    // Add the comment to the blog post
+    blog.BlogComments.push({ userId, text,username });
+    
+    // Save the updated blog post
+    const updatedBlog = await blog.save();
+
+    res.status(200).json(updatedBlog);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });

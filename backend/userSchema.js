@@ -11,6 +11,10 @@ const Userschema = mongoose.Schema({
     Userpassword:{
         type:String
     },
+    withgoogle:{
+        type:Boolean,
+        trim:true,
+    }
 })
 
 

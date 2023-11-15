@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import "./addPage.css";
 
 
@@ -13,6 +14,13 @@ export default function AddPage() {
   const [Tagdata, setTagdata] =useState([])
   const [selectedTag, setSelectedTag] = useState("");
 
+
+  const UserToken=localStorage.getItem("token");
+  console.log("User_Token :",UserToken)
+  const decodedToken = jwtDecode(UserToken);
+  console.log("decoded:",decodedToken)
+  const userId = decodedToken._id;
+console.log("userid",userId);
 
   const handleBlogNameChange = (event) => {
     setBlogname(event.target.value);
@@ -68,7 +76,8 @@ const Blogsubmit= async(e)=>{
         BlogName:blogname,
         Blogimg:BlogIMG.url,
         Blogtags:blogtag,
-        BlogContent:blogcontent
+        BlogContent:blogcontent,
+        User_ID:userId,
       }),
 
     })

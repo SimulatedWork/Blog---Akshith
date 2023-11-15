@@ -2,16 +2,29 @@
 import React, { useState, useEffect } from "react";
 import "./viewPage.css";
 import { useParams } from "react-router-dom";
+
 import { Modal, Input, Button,  Comments  } from "antd";
+import { jwtDecode } from "jwt-decode";
+
 export default function ViewPage() {
   const { id } = useParams();
   const [viewdata, setViewdata] = useState([]);
   const [bloglike, setBloglike] = useState([]);
   const [ viewlike,setViewlike] = useState("");
   const [isCommentModalVisible, setIsCommentModalVisible] = useState(false);
+  
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
 
+  const UserToken=localStorage.getItem("token");
+  console.log("User_Token :",UserToken)
+  const decodedToken = jwtDecode(UserToken);
+  console.log("decoded:",decodedToken)
+  const userId = decodedToken._id;
+console.log("userid",userId);
+
+  const Username= decodedToken.name;
+  console.log("Username:",Username);
 
   useEffect(() => {
     console.log("View data", viewdata);
@@ -27,7 +40,7 @@ export default function ViewPage() {
         console.log(error, " failed to fetch");
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []);  
 
   // Inside your BlogPage component
   const handleLikeClick = (id) => {
@@ -61,6 +74,42 @@ export default function ViewPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
+  const Commentsubmit= async()=>{
+    // e.preventDefault();
+   
+      const submit = await fetch(`http://localhost:2004/addComment/${id}`, {
+        method: "PUT",
+  
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+  
+        body: JSON.stringify({
+          "userId":userId,
+          "text":comment,
+          "username":Username,
+        }),
+  
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          console.log(json);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  
+        console.log("BLOG DATA :",submit)
+    
+    
+      // console.log("Bolg Image",BlogIMG);
+  
+  }
+  
+ 
+
+
   const showModal = () => {
     setIsCommentModalVisible(true);
   };
@@ -69,6 +118,7 @@ export default function ViewPage() {
     setComments([...comments, { author: "User", content: comment }]);
     setIsCommentModalVisible(false);
     setComment(""); 
+    Commentsubmit();
   };
 
   const handleCancel = () => {
@@ -116,12 +166,12 @@ export default function ViewPage() {
           onChange={(e) => setComment(e.target.value)}
           className="commentStyle"
         />
-        {comments.map((c, index) => (
-          <div>
+        {/* {comments.map((c, index) => ( */}
+          {/* <div> */}
           {/* <Comments key={index} author={c.author} content={c.content}  className="commentStyle" /> */}
           {/* <p>Hi</p> */}
-          </div>
-        ))}
+          {/* </div> */}
+        {/* ))} */}
       </Modal>
     </div>
   );
