@@ -1,5 +1,21 @@
 const mongoose = require("mongoose");
 
+const commentSchema = mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User', // Assuming you have a User model for storing user information
+        required: true,
+    },
+    username:{
+        type:String, 
+    },
+    text: {
+        type: String,
+        required: true,
+    },
+});
+
+
 const UserSchema= mongoose.Schema({
     BlogName:{
         type:String
@@ -17,8 +33,9 @@ const UserSchema= mongoose.Schema({
         type: Number,
         // default: 0, 
     },
-    BlogComments:{
-        type:Array
+    BlogComments:[commentSchema],
+    User_ID:{
+        type:String
     }
 })
 

@@ -2,11 +2,29 @@
 import React, { useState, useEffect } from "react";
 import "./viewPage.css";
 import { useParams } from "react-router-dom";
+
+import { Modal, Input, Button,  Comments  } from "antd";
+import { jwtDecode } from "jwt-decode";
+
 export default function ViewPage() {
   const { id } = useParams();
   const [viewdata, setViewdata] = useState([]);
   const [bloglike, setBloglike] = useState([]);
-  const [ viewlike,setViewlike] = useState("")
+  const [ viewlike,setViewlike] = useState("");
+  const [isCommentModalVisible, setIsCommentModalVisible] = useState(false);
+  
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+
+  const UserToken=localStorage.getItem("token");
+  console.log("User_Token :",UserToken)
+  const decodedToken = jwtDecode(UserToken);
+  console.log("decoded:",decodedToken)
+  const userId = decodedToken._id;
+console.log("userid",userId);
+
+  const Username= decodedToken.name;
+  console.log("Username:",Username);
 
   useEffect(() => {
     console.log("View data", viewdata);
@@ -22,7 +40,7 @@ export default function ViewPage() {
         console.log(error, " failed to fetch");
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []);  
 
   // Inside your BlogPage component
   const handleLikeClick = (id) => {
@@ -56,6 +74,57 @@ export default function ViewPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
+  const Commentsubmit= async()=>{
+    // e.preventDefault();
+   
+      const submit = await fetch(`http://localhost:2004/addComment/${id}`, {
+        method: "PUT",
+  
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+  
+        body: JSON.stringify({
+          "userId":userId,
+          "text":comment,
+          "username":Username,
+        }),
+  
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          console.log(json);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  
+        console.log("BLOG DATA :",submit)
+    
+    
+      // console.log("Bolg Image",BlogIMG);
+  
+  }
+  
+ 
+
+
+  const showModal = () => {
+    setIsCommentModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setComments([...comments, { author: "User", content: comment }]);
+    setIsCommentModalVisible(false);
+    setComment(""); 
+    Commentsubmit();
+  };
+
+  const handleCancel = () => {
+    setIsCommentModalVisible(false);
+  };
+
   return (
     <div className="viewPage-main">
       <div className="viewPage-sub1">
@@ -79,9 +148,31 @@ export default function ViewPage() {
           </button>
         </div>
         <div className="viewPage-comment">
-          <button className="comment-btn">Comment</button>
+          <button className="comment-btn" onClick={showModal}>Comment</button>
         </div>
       </div>
+      <Modal
+        title="Comments"
+        visible={isCommentModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        className="modalStyle"
+        bodyStyle={{ padding: "20px" }}
+      >
+        <Input.TextArea
+          rows={4}
+          placeholder="Enter your comment here..."
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          className="commentStyle"
+        />
+        {/* {comments.map((c, index) => ( */}
+          {/* <div> */}
+          {/* <Comments key={index} author={c.author} content={c.content}  className="commentStyle" /> */}
+          {/* <p>Hi</p> */}
+          {/* </div> */}
+        {/* ))} */}
+      </Modal>
     </div>
   );
 }
