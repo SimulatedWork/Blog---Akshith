@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Pagination } from 'antd';
+import { Pagination, Tooltip } from 'antd';
 import "./blogPage.css";
 // import IMG from "../Assests/image-1.jpeg";
 
@@ -9,6 +9,7 @@ export default function BlogPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const blogsPerPage = 5;
 
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     fetch("http://localhost:2004/blogdata")
@@ -38,9 +39,19 @@ export default function BlogPage() {
           ></input>
         </div>
         <div className="blog-div-btn">
-          <Link to="/createrPage">
+          {
+          token?(
+            <Link to="/createrPage">
             <button className="blog-btn1">+ CREATE</button>
           </Link>
+          ):(
+            <Tooltip placement="topLeft" title={"You Need To login first to view blog"} > 
+          <Link to="/loginPage">
+            <button className="blog-btn1">+ CREATE</button>
+          </Link>
+          </Tooltip>
+          )
+        }
         </div>
       </div>
 
@@ -64,10 +75,22 @@ export default function BlogPage() {
                 {abc.BlogContent}
               </p>
               <div className="blog-btn">
-                <Link to={`/viewPage/${abc._id}`}>
-                  <button className="btn-2">VIEW--{">"}</button>
-                  {/* <h2 className='btn-2'>VIEW--{'>'}</h2> */}
-                </Link>
+                {
+                  token?(
+                    <Link to={`/viewPage/${abc._id}`}>
+                        <button className="btn-2">VIEW--{">"}</button>
+                        {/* <h2 className='btn-2'>VIEW--{'>'}</h2> */}
+                      </Link>
+                  ):(
+                    <Tooltip placement="top" title={"You Need To login first to view blog"} >           
+                    <Link to={`/viewPage/${abc._id}`}>
+                        <button className="btn-2">VIEW--{">"}</button>
+                        {/* <h2 className='btn-2'>VIEW--{'>'}</h2> */}
+                      </Link>
+                      </Tooltip>
+                  )
+                }
+             
               </div>
             </div>
           </div>

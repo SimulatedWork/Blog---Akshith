@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import "./Header.css";
 import Logo from "../Assests/Logo-p2.png";
 import { jwtDecode } from "jwt-decode";
-import { Avatar } from "antd";
+import { Avatar,Button,Dropdown,Menu } from "antd";
+import {PoweroffOutlined} from '@ant-design/icons'
 export default function Navbar() {
  
 
   const [userDetail, setUserDetail] = useState([])
+  const [isCommentModalVisible, setIsCommentModalVisible] = useState(false);
 
   const Token=localStorage.getItem("token");
   console.log("Token :",Token)
@@ -31,6 +33,21 @@ export default function Navbar() {
       }
     }
   }, [Token]);
+
+  function logout() {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  }
+  const menu=(
+    <Menu>
+      <Menu.Item>
+      <Button style={{color:"black"}} type="link" icon={<PoweroffOutlined/>} onClick={logout}>LogOut</Button>
+      </Menu.Item>
+    </Menu>
+  )
+  const showModal = () => {
+    setIsCommentModalVisible(!isCommentModalVisible);
+  };
   return (
     <div className="nav">
       <Link to="/">
@@ -67,7 +84,17 @@ export default function Navbar() {
                 Login
               </Link>:
               <div>
-                   <Avatar className="Navbar-logo" style={{ backgroundColor: 'black' }}>{userDetail.Username?.charAt(0)}</Avatar>
+                <Dropdown
+                   overlay={menu}
+                    title="LogOut"
+                    trigger={['click']}
+                    visible={isCommentModalVisible}
+                    className="modalStyle"
+                   >
+                    <Avatar className="Navbar-logo" style={{ backgroundColor: 'black' }} onClick={showModal}>{userDetail.Username?.charAt(0)}</Avatar>
+
+                    
+                   </Dropdown>
               </div>
             }
             

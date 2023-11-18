@@ -87,6 +87,7 @@ margin-left: auto;
 
 .Navbar-logo{
    height: 5vmin;
+   cursor: pointer;
    /* background-color: aqua; */
 }
 
