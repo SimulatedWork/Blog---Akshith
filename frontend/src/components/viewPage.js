@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import "./viewPage.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Modal, Input, Button,  Comments  } from "antd";
 import { jwtDecode } from "jwt-decode";
@@ -10,42 +11,62 @@ export default function ViewPage() {
   const { id } = useParams();
   const [viewdata, setViewdata] = useState([]);
   const [bloglike, setBloglike] = useState([]);
+  const navigate = useNavigate();
   const [ viewlike,setViewlike] = useState("");
   const [isCommentModalVisible, setIsCommentModalVisible] = useState(false);
   
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
 
-  const UserToken=localStorage.getItem("token");
-  console.log("User_Token :",UserToken)
-  const decodedToken = jwtDecode(UserToken);
-  console.log("decoded:",decodedToken)
-  const userId = decodedToken._id;
-console.log("userid",userId);
-
-  const Username= decodedToken.name;
-  console.log("Username:",Username);
+  let Username;
+  let userId;
 
   useEffect(() => {
     console.log("View data", viewdata);
   }, [viewdata]);
   useEffect(() => {
-    fetch(`http://localhost:2004/blogview/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("data", data);
-        setViewdata(data);
+    const token = localStorage.getItem('token');
+    if(token){
+      const UserToken=localStorage.getItem("token");
+      console.log("User_Token :",UserToken)
+      const decodedToken = jwtDecode(token );
+      console.log("decoded:",decodedToken)
+       userId = decodedToken._id;
+    console.log("userid",userId);
+    
+       Username= decodedToken.name;
+      console.log("Username:",Username);
+      fetch(`http://localhost:2004/blogview/${id}`, {
+        headers: {
+          Authorization: `Bearer ${UserToken}`,
+        },
       })
-      .catch((error) => {
-        console.log(error, " failed to fetch");
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("data", data);
+          setViewdata(data);
+        })
+        .catch((error) => {
+          console.log(error, " failed to fetch");
+        });
+    }else{
+      navigate('/loginPage')
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);  
+  }, []);
+  
 
   // Inside your BlogPage component
   const handleLikeClick = (id) => {
+    const token = localStorage.getItem('token');
+    if(token){
     fetch(`http://localhost:2004/like/${id}`, {
       method: "PUT",
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((response) => response.json())
       .then((data) => {
@@ -55,6 +76,9 @@ console.log("userid",userId);
       .catch((error) => {
         console.error("Failed to like the blog post:", error);
       });
+    }else{
+      console.log("error");
+    }
   };
 
   

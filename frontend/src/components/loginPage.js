@@ -39,7 +39,7 @@ export default function LoginPage() {
     console.log("decode :", decode)
     localStorage.setItem("username",decode.name);
     localStorage.setItem("token",json.user);
-    // window.location.href = '/';
+    window.location.href = '/';
   }
      
   );

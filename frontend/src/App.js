@@ -9,6 +9,7 @@ import ViewPage from './components/viewPage';
 import LoginPage from './components/loginPage';
 import RegiPage from './components/regiPage';
 import AboutPage from './components/aboutPage';
+import EditPage from './components/editPage';
 import { Route,Routes
 } from 'react-router-dom';
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path='/loginpage' element={<LoginPage/>}/>
         <Route path='/regiPage' element={<RegiPage/>}/>
         <Route path='/aboutPage' element={<AboutPage/>}/>
+        <Route path='/editPage/:id' element={<EditPage/>}/>
        </Routes>
        <Footer/>
       

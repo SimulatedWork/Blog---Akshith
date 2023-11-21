@@ -133,9 +133,9 @@ const handleTagClick = (tag) => {
   return (
     <div className='addPage-main'>
       <h1 className='addPage-h1'>ADD Blog's</h1>
-        <div className='addPage-sub1'>
+        {/* <div className='addPage-sub1'>
           <button className="addPage-btn1">Edit</button>
-        </div>
+        </div> */}
         <form className='addPage-sub2'>
         <div className="addPage-div">
           <label className="addPage-label">Blog Name:

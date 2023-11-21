@@ -18,6 +18,8 @@ const Model = require("./model");
 const User=require("./userSchema");
 const User_ID=process.env.ID;
 
+const Token_id=process.env.Token_ID;
+
 mongoose.set("strictQuery", false);
 
 mongoose
@@ -36,8 +38,32 @@ mongoose
   });
 
 
+
+  const middleware=async(req,res,next)=>{
+    const {authorization} = req.headers;
+    // console.log("token",authorization)
+    if(!authorization){
+        res.send({"error":"authorization is required"})
+        return
+    }
+    const token = authorization.split(' ')[1]
+    try{
+        const {_id} = jwt.verify(token,Token_id);
+        next()
+    }
+    catch(err){
+        res.send({"error":"token is required"})
+    }
+    
+  }
+
   
 app.get("/blogdata", async (err, data) => {
+  const list = await Model.find();
+  data.status(200).send(list);
+});
+
+app.get("/Userblog", async (err, data) => {
   const list = await Model.find();
   data.status(200).send(list);
 });
@@ -82,7 +108,7 @@ app.post("/blogPost", async (req, res) => {
   }
 });
 
-app.get("/blogview/:id", async (req, res) => {
+app.get("/blogview/:id", middleware,async (req, res) => {
   const { id } = req.params;
   const list = await Model.findById(id);
   res.status(200).json(list);
@@ -110,9 +136,14 @@ app.get("/blogtags", async (req, res) => {
   }
 });
 
+app.get("/editedBlog/:id", async (req, res) => {
+  const { id } = req.params;
+  const list = await Model.findById(id);
+  res.status(200).json(list);
+});
 
 
-app.put("/like/:id", async (req, res) => {
+app.put("/like/:id", middleware ,async (req, res) => {
   try {
     const { id } = req.params;
     // console.log("id",id)
@@ -194,7 +225,7 @@ app.post("/token", async (req, res) => {
     });
 
     const payload = ticket.getPayload();
-    console.log("payload", payload);
+    // console.log("payload", payload);
 
     const email = payload.email;
     const check = await User.findOne({ Useremail: email });
@@ -217,7 +248,7 @@ app.post("/token", async (req, res) => {
         email: data.Useremail,
         name: data.Username,
         _id: data._id,
-      }, "akshith10");
+      }, Token_id);
 
       return res.status(201).json({ status: "signed in successfully", user: token });
     } else {
@@ -225,7 +256,7 @@ app.post("/token", async (req, res) => {
         email: check.Useremail,
         name: check.Username,
         _id: check._id,
-      }, "akshith10");
+      }, Token_id);
 
       return res.status(201).json({ status: "signed in successfully", user: token });
     }
@@ -256,7 +287,7 @@ app.post('/register', async (req, res) => {
         email: user.Useremail,
         name: user.Username,
         _id: user._id,
-      }, "akshith29");
+      }, Token_id);
 
       return res.status(400).json({ status: "User already exists", token: token });
     } else {
@@ -273,7 +304,7 @@ app.post('/register', async (req, res) => {
           email: savedUser.Useremail,
           name: savedUser.Username,
           _id: savedUser._id,
-        }, "akshith29");
+        }, Token_id);
 
         return res.status(201).json({ status: "Successfully Registered", token: token });
       } else {
@@ -304,7 +335,7 @@ app.post("/login", async (req, res) => {
           password: check.Userpassword,
           name: check.Username,
           _id: check._id
-        }, "akshith");
+        }, Token_id);
         return res.json({ status: "Signed in successfully", user: token });
       } else {
         return res.json({ status: "Please check email and password", user: null });
@@ -316,7 +347,7 @@ app.post("/login", async (req, res) => {
         email: check.email,
         _id: check._id,
         name: check.name
-      }, "akshith01"); 
+      }, Token_id); 
       return res.json({ status: "Signed in successfully", user: token });
     }
   } catch (error) {
@@ -324,6 +355,8 @@ app.post("/login", async (req, res) => {
     return res.status(500).json({ status: "Internal Server Error", user: null });
   }
 });
+
+
 
 
 app.get("/userdata/:id", async (req, res) => {
@@ -360,5 +393,19 @@ app.put('/addComment/:blogId', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.delete('/blog/:id',middleware, async (req, res) => {
+  const { id } = req.params;
+  try {
+    // Find the blog by ID and delete it
+    const deletedBlog = await Model.findByIdAndDelete(id);
+    if (!deletedBlog) {
+      return res.status(404).json({ error: 'Blog not found' });
+    }
+    res.json({ message: 'Blog deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete blog' });
   }
 });
