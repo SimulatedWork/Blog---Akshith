@@ -42,6 +42,8 @@ mongoose
   const middleware=async(req,res,next)=>{
     const {authorization} = req.headers;
     // console.log("token",authorization)
+    // console.log("name",name);
+    // console.log("email",email);
     if(!authorization){
         res.send({"error":"authorization is required"})
         return
@@ -165,6 +167,12 @@ app.put("/like/:id", middleware ,async (req, res) => {
 app.get("/displaylike/:id", async (req, res) => {
   const { id } = req.params;
   const list = await Model.findById(id).select("BlogLike");
+  res.status(200).json(list);
+});
+
+app.get("/displayComments/:id", async (req, res) => {
+  const { id } = req.params;
+  const list = await Model.findById(id).select("BlogComments");
   res.status(200).json(list);
 });
 
@@ -407,5 +415,28 @@ app.delete('/blog/:id',middleware, async (req, res) => {
     res.json({ message: 'Blog deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete blog' });
+  }
+});
+
+
+app.put('/editBlog/:id', async (req, res) => {
+  const { id } = req.params;
+  const { BlogName, Blogimg, Blogtags, BlogContent } = req.body;
+  try {
+    const blogPost = await Model.findById(id);
+
+    if (!blogPost) {
+      return res.status(404).json({ error: 'Blog post not found' });
+    }
+    blogPost.BlogName = BlogName;
+    blogPost.Blogimg = Blogimg;
+    blogPost.Blogtags = Blogtags;
+    blogPost.BlogContent = BlogContent;
+    const updatedBlogPost = await blogPost.save();
+    // console.log("updated blog :",updatedBlogPost)
+    res.status(200).json({ message: 'Blog post updated successfully', updatedBlogPost });
+  } catch (error) {
+    console.error('Error updating blog post:', error);
+    res.status(500).json({ error: 'Failed to update blog post' });
   }
 });

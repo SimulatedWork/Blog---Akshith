@@ -84,7 +84,7 @@ const Blogsubmit= async(e)=>{
       .then((res) => res.json())
       .then((json) => {
         console.log(json);
-        window.location.href = "/blogPage";
+        window.location.href = "/createrPage";
       })
       .catch((err) => {
         console.log(err);
@@ -188,17 +188,17 @@ const handleTagClick = (tag) => {
         </div>
         <div>
           <label className="addPage-label">Blog Content:
-            <input
+            <textarea
             type="text"
-            className="addPage-input1"
+            className="addPage-input3"
             required="required"
             onChange={handleBlogContentChange}
             >
-            </input>
+            </textarea>
           </label>
         </div>
         <div>
-          <button onClick={Blogsubmit}>
+          <button className="editPage-btn4" onClick={Blogsubmit}>
             Save
           </button>
         </div>
