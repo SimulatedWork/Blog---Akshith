@@ -93,9 +93,15 @@ input:hover {
 
 .creater-para {
   font-size: 1rem;
-  min-height: 10vh;
+  min-height: 20vh;
   /* min-width: 32vw; */
   color: #251401;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* number of lines to show */
+          line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .creater-btn {
@@ -107,30 +113,35 @@ input:hover {
 .creater-div-btn{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 .creater-btn-2 {
+  height: 3.7vh;
+  /* width:8vw; */
   background-color: #0a0500;
   width: fit-content;
   border-radius: none;
   color: white;
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bolder;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   cursor: pointer;
 }
 .creater-btn-3{
+  /* height: 3.3vh; */
+  /* width: 4vw; */
   background-color: #0a0500;
   width: fit-content;
   border-radius: none;
   color: white;
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bolder;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   cursor: pointer;
-  margin: auto;
+  /* margin: auto; */
+  margin-top: 3%;
 }
 
 .creater-sub3{
@@ -161,6 +172,7 @@ input:hover {
 
   .creater-para {
     font-size: 0.9rem;
+    min-height: 0;
   }
 
   .creater-h1 {

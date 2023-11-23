@@ -25,7 +25,7 @@ export default function CreaterPage() {
     console.log("UserBlogdata :", userBlog);
   }, [userBlog]);
   useEffect(() => {
-    fetch("http://localhost:2004/Userblog")
+    fetch(`${process.env.REACT_APP_URL}/Userblog`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data, "datas");
@@ -51,7 +51,7 @@ export default function CreaterPage() {
     // const Blog_id=currentBlogs._id;
     console.log("id", blogId);
     try {
-      const response = await fetch(`http://localhost:2004/blog/${blogId._id}`, {
+      const response = await fetch(`${process.env.REACT_APP_URL}/blog/${blogId._id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${UserToken}`,

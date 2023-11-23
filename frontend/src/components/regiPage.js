@@ -30,7 +30,7 @@ export default function RegiPage() {
   
   function handlecallbackresponse(response){
     
-    fetch("http://localhost:2004/token", {
+    fetch(`${process.env.REACT_APP_URL}/token`, {
       method: "POST",
       body: JSON.stringify({
         "tokenold":response.credential
@@ -74,7 +74,7 @@ export default function RegiPage() {
     const onFinish = async(values) => {
         console.log('Received values of form: ', values);
         try {
-          const response = await fetch('http://localhost:2004/register', {
+          const response = await fetch(`${process.env.REACT_APP_URL}/register`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json; charset=UTF-8',

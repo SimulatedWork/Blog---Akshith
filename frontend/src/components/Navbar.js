@@ -22,7 +22,7 @@ export default function Navbar() {
       try {
         const decodedToken = jwtDecode(Token);
         const userId = decodedToken._id;
-        fetch(`http://localhost:2004/userdata/${userId}`)
+        fetch(`${process.env.REACT_APP_URL}/userdata/${userId}`)
           .then(res => res.json())
           .then(data => {
             setUserDetail(data);

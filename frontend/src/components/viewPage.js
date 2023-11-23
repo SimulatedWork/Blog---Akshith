@@ -42,7 +42,7 @@ export default function ViewPage() {
 
       Username = decodedToken.name;
       console.log("Username:", Username);
-      fetch(`http://localhost:2004/blogview/${id}`, {
+      fetch(`${process.env.REACT_APP_URL}/blogview/${id}`, {
         headers: {
           Authorization: `Bearer ${UserToken}`,
           //   name:`${Username}`,
@@ -68,7 +68,7 @@ export default function ViewPage() {
   const handleLikeClick = (id) => {
     const token = localStorage.getItem("token");
     if (token) {
-      fetch(`http://localhost:2004/like/${id}`, {
+      fetch(`${process.env.REACT_APP_URL}/like/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -92,7 +92,7 @@ export default function ViewPage() {
     console.log("view likedata", viewlike);
   }, [viewlike]);
   useEffect(() => {
-    fetch(`http://localhost:2004/displaylike/${id}`)
+    fetch(`${process.env.REACT_APP_URL}/displaylike/${id}`)
       .then((response) => response.json())
       .then((data) => {
         console.log("like data", data);
@@ -106,7 +106,7 @@ export default function ViewPage() {
 
  
   useEffect(() => {
-    fetch(`http://localhost:2004/displayComments/${id}`)
+    fetch(`${process.env.REACT_APP_URL}/displayComments/${id}`)
       .then((response) => response.json())
       .then((data) => {
         console.log("Comments data", data);
@@ -140,7 +140,7 @@ export default function ViewPage() {
 
       Username = decodedToken.name;
       console.log("Username:", Username);
-      const submit = await fetch(`http://localhost:2004/addComment/${id}`, {
+      const submit = await fetch(`${process.env.REACT_APP_URL}/addComment/${id}`, {
         method: "PUT",
 
         headers: {
