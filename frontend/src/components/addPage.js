@@ -65,7 +65,7 @@ const Blogsubmit= async(e)=>{
     console.log("hello",res)
     const BlogIMG = res;
     
-    const submit = await fetch("http://localhost:2004/blogPost", {
+    const submit = await fetch(`${process.env.REACT_APP_URL}/blogPost`, {
       method: "POST",
 
       headers: {
@@ -106,7 +106,7 @@ useEffect(()=>{
 },[Tagdata]);
 
 useEffect(() => {
-  fetch("http://localhost:2004/blogtags")
+  fetch(`${process.env.REACT_APP_URL}/blogtags`)
     .then((response) => response.json())
     .then((data) => {
       console.log("Tagdata", data);
