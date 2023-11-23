@@ -23,7 +23,7 @@ export default function LoginPage() {
 
   function handlecallbackresponse(response){
     
-    fetch("http://localhost:2004/token", {
+    fetch(`${process.env.REACT_APP_URL}/token`, {
       method: "POST",
       body: JSON.stringify({
         "tokenold":response.credential
@@ -67,7 +67,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:2004/login", {
+      const response = await fetch(`${process.env.REACT_APP_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

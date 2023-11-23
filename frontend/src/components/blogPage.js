@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Pagination, Tooltip } from 'antd';
 import "./blogPage.css";
+
 // import IMG from "../Assests/image-1.jpeg";
 
 export default function BlogPage() {
@@ -13,7 +14,8 @@ export default function BlogPage() {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    fetch("http://localhost:2004/blogdata")
+    // console.log(process.env.REACT_APP_URL)
+    fetch(`${process.env.REACT_APP_URL}/blogdata`)
       .then((response) => response.json())
       .then((data) => {
         console.log("data", data);
@@ -77,10 +79,6 @@ export default function BlogPage() {
                     {abc.BlogName}
                   </h1>
                   <p style={{ margin: "0" }} className="blog-para">
-                    {/* Photography is the art, application, and practice of creating
-                    images by recording light, either electronically by means of an
-                    image sensor, or chemically by means of a light-sensitive
-                    material such as photographic film. */}
                     {abc.BlogContent}
                   </p>
                   <div className="blog-btn">

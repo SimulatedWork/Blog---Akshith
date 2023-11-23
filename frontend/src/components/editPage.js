@@ -112,7 +112,7 @@ export default function EditPage() {
     
         try {
           const token = localStorage.getItem("token");
-          await fetch(`http://localhost:2004/editBlog/${id}`, {
+          await fetch(`${process.env.REACT_APP_URL}/editBlog/${id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
