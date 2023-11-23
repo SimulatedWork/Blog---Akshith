@@ -9,6 +9,9 @@ import { Pagination } from "antd";
 export default function CreaterPage() {
   const [userBlog, setUserBlog] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchBlogQuery, setSearchBlogQuery] = useState("");
+
+
   const blogsPerPage = 5;
 
   const UserToken = localStorage.getItem("token");
@@ -39,6 +42,10 @@ export default function CreaterPage() {
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
   const currentBlogs = userBlog.slice(indexOfFirstBlog, indexOfLastBlog);
+
+  const filteredBlogs = currentBlogs.filter((Blogs) =>
+  (Blogs.BlogName.toLowerCase().includes(searchBlogQuery.toLowerCase())  && Blogs.BlogName.toLowerCase().startsWith(searchBlogQuery.toLowerCase()) )
+);
 
   const handleDelete = async (blogId) => {
     // const Blog_id=currentBlogs._id;
@@ -76,6 +83,8 @@ export default function CreaterPage() {
             name="text"
             class="input"
             placeholder="Search here..."
+            value={searchBlogQuery}
+            onChange={(e)=>setSearchBlogQuery(e.target.value)}
           ></input>
         </div>
         <div className="creater-div-btn">
@@ -87,8 +96,8 @@ export default function CreaterPage() {
       <div className="creater-sub3">
         <h1 className="creater-name">Hello {decodedToken.name}!!</h1>
       </div>
-      {currentBlogs.length > 0 ? (
-        currentBlogs.map((data) => (
+      {filteredBlogs.length > 0 ? (
+        filteredBlogs.map((data) => (
           <div className="creater-main2">
             <div className="creater-sub2">
               <div className="creater-img">

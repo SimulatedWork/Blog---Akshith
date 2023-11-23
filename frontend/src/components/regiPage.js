@@ -89,6 +89,7 @@ export default function RegiPage() {
           if (response.ok) {
             const json = await response.json();
             console.log(json);
+            // localStorage.setItem("token", json.user);
             message.success(json.status);
             window.location.href = '/loginpage';
           } else {

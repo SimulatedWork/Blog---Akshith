@@ -7,6 +7,7 @@ import "./blogPage.css";
 export default function BlogPage() {
   const [data, setdata] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchBlogQuery, setSearchBlogQuery] = useState("");
   const blogsPerPage = 5;
 
   const token = localStorage.getItem('token');
@@ -26,6 +27,10 @@ export default function BlogPage() {
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
   const currentBlogs = data.slice(indexOfFirstBlog, indexOfLastBlog);
+// console.log(currentBlogs);
+  const filteredBlogs = currentBlogs.filter((Blogs) =>
+    (Blogs.BlogName.toLowerCase().includes(searchBlogQuery.toLowerCase())  && Blogs.BlogName.toLowerCase().startsWith(searchBlogQuery.toLowerCase()) )
+  );
 
   return (
     <div className="blog-main">
@@ -36,6 +41,8 @@ export default function BlogPage() {
             name="text"
             class="input"
             placeholder="Search here..."
+            value={searchBlogQuery}
+            onChange={(e)=>setSearchBlogQuery(e.target.value)}
           ></input>
         </div>
         <div className="blog-div-btn">
@@ -54,49 +61,60 @@ export default function BlogPage() {
         }
         </div>
       </div>
-
-      {currentBlogs.map((abc) => {
-        console.log(abc);
-        return (
-          <div className="blog-main2">
-          <div className="blog-sub2">
-            <div className="blog-img">
-              <img className="IMG" src={abc.Blogimg} alt="img"></img>
-            </div>
-            <div className="blog-hp">
-              <h1 className="blog-h1" style={{ margin: "0" }}>
-                {abc.BlogName}
-              </h1>
-              <p style={{ margin: "0" }} className="blog-para">
-                {/* Photography is the art, application, and practice of creating
-                images by recording light, either electronically by means of an
-                image sensor, or chemically by means of a light-sensitive
-                material such as photographic film. */}
-                {abc.BlogContent}
-              </p>
-              <div className="blog-btn">
-                {
-                  token?(
-                    <Link to={`/viewPage/${abc._id}`}>
-                        <button className="btn-2">VIEW--{">"}</button>
-                        {/* <h2 className='btn-2'>VIEW--{'>'}</h2> */}
-                      </Link>
-                  ):(
-                    <Tooltip placement="top" title={"You Need To login first to view blog"} >           
-                    <Link to={`/viewPage/${abc._id}`}>
-                        <button className="btn-2">VIEW--{">"}</button>
-                        {/* <h2 className='btn-2'>VIEW--{'>'}</h2> */}
-                      </Link>
-                      </Tooltip>
-                  )
-                }
-             
+      {
+        filteredBlogs.length>0 ? (
+          <div>
+          {filteredBlogs.map((abc) => {
+            console.log(abc);
+            return (
+              <div className="blog-main2">
+              <div className="blog-sub2">
+                <div className="blog-img">
+                  <img className="IMG" src={abc.Blogimg} alt="img"></img>
+                </div>
+                <div className="blog-hp">
+                  <h1 className="blog-h1" style={{ margin: "0" }}>
+                    {abc.BlogName}
+                  </h1>
+                  <p style={{ margin: "0" }} className="blog-para">
+                    {/* Photography is the art, application, and practice of creating
+                    images by recording light, either electronically by means of an
+                    image sensor, or chemically by means of a light-sensitive
+                    material such as photographic film. */}
+                    {abc.BlogContent}
+                  </p>
+                  <div className="blog-btn">
+                    {
+                      token?(
+                        <Link to={`/viewPage/${abc._id}`}>
+                            <button className="btn-2">VIEW--{">"}</button>
+                            {/* <h2 className='btn-2'>VIEW--{'>'}</h2> */}
+                          </Link>
+                      ):(
+                        <Tooltip placement="top" title={"You Need To login first to view blog"} >           
+                        <Link to={`/viewPage/${abc._id}`}>
+                            <button className="btn-2">VIEW--{">"}</button>
+                            {/* <h2 className='btn-2'>VIEW--{'>'}</h2> */}
+                          </Link>
+                          </Tooltip>
+                      )
+                    }
+                 
+                  </div>
+                </div>
               </div>
+              </div>
+            );
+          })}
+          </div>
+        ):(
+          <div>
+            <h1>Sorry No such Blogs !!!</h1>
             </div>
-          </div>
-          </div>
-        );
-      })}
+        )
+      }
+
+    
      {/* Pagination */}
      <div className="pagination">
               <Pagination onChange={(e)=>setCurrentPage(e)} defaultCurrent={currentPage} total={(data.length*10)/5} />
